@@ -24,7 +24,9 @@ IFLAGS = -I/comp/40/build/include -I/usr/sup/cii40/include/cii
 # to use the GNU 99 standard to get the right items in time.h for the
 # the timing support to compile.
 # 
-CFLAGS = -g -std=gnu99 -Wall -Wextra -Werror -Wfatal-errors -pedantic $(IFLAGS)
+# CFLAGS = -g -std=gnu99 -Wall -Wextra -Werror -Wfatal-errors -pedantic $(IFLAGS)
+CFLAGS = -g -std=gnu99 -Wall -Wextra -Werror -pedantic $(IFLAGS)
+
 
 # Linking flags
 # Set debugging information and update linking path
@@ -49,7 +51,7 @@ INCLUDES = $(shell echo *.h)
 
 ############### Rules ###############
 
-all: ppmtrans a2test timing_test
+all: pnmdiff
 
 
 ## Compile step (.c files -> .o files)
@@ -61,16 +63,10 @@ all: ppmtrans a2test timing_test
 
 ## Linking step (.o -> executable program)
 
-a2test: a2test.o uarray2b.o uarray2.o a2plain.o
-	$(CC) $(LDFLAGS) $^ -o $@ $(LDLIBS)
-
-timing_test: timing_test.o cputiming.o
-	$(CC) $(LDFLAGS) $^ -o $@ $(LDLIBS) 
-
-ppmtrans: ppmtrans.o cputiming.o the-rest-of-your-files.o
+pnmdiff: pnmdiff.o a2plain.o uarray2.o
 	$(CC) $(LDFLAGS) $^ -o $@ $(LDLIBS)
 
 
 clean:
-	rm -f ppmtrans a2test timing_test *.o
+	rm -f pnmdiff *.o
 

@@ -38,5 +38,5 @@ int main(int argc, char *argv[])
                 compress_or_decompress(stdin);
         }
 
-        return EXIT_SUCCESS; 
+        return EXIT_SUCCESS;
 }

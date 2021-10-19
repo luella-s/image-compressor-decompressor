@@ -51,7 +51,7 @@ INCLUDES = $(shell echo *.h)
 
 ############### Rules ###############
 
-all: pnmdiff
+all: pnmdiff compress40
 
 
 ## Compile step (.c files -> .o files)
@@ -65,6 +65,8 @@ all: pnmdiff
 
 pnmdiff: pnmdiff.o a2plain.o uarray2.o
 	$(CC) $(LDFLAGS) $^ -o $@ $(LDLIBS)
+
+compress40: 40image.o compress.o a2plain.o uarray2.o
 
 
 clean:

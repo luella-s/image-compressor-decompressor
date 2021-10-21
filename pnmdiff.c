@@ -6,14 +6,9 @@
 
 int main(int argc, char *argv[])    //TO DO: make more modular
 {
-<<<<<<< HEAD
     FILE *fp_1 = NULL;
     FILE *fp_2 = NULL;
 
-=======
-    char file_1[1000];
-    char file_2[1000];
->>>>>>> 7926a726cddc872cffb44b959e312e3d2dc8bed9
     if (argc == 3) {
         /* first file is read from stdin */
         if (strcmp(argv[1], "-") == 0) {
@@ -21,7 +16,6 @@ int main(int argc, char *argv[])    //TO DO: make more modular
                 fprintf(stderr, "Only one file can be from stdin\n");
                 exit(EXIT_FAILURE);
             }
-<<<<<<< HEAD
             fp_1 = stdin;
             fp_2 = open_or_abort(argv[2], "r");
         } else if (strcmp(argv[2], "-") == 0) {
@@ -32,18 +26,6 @@ int main(int argc, char *argv[])    //TO DO: make more modular
             /* no files from stdin */
             fp_1 = open_or_abort(argv[1], "r");
             fp_2 = open_or_abort(argv[2], "r");
-=======
-            scanf("%s", file_1);
-            strcpy(file_2, argv[2]);
-        } else if (strcmp(argv[2], "-") == 0) {
-            /* second file is read from stdin */
-            strcpy(file_1, argv[1]);
-            scanf("%s", file_2);
-        } else {
-            /* no files from stdin */
-            strcpy(file_1, argv[1]);
-            strcpy(file_2, argv[2]);
->>>>>>> 7926a726cddc872cffb44b959e312e3d2dc8bed9
         }
     } else {
       /* Exit if there are too many arguments */
@@ -55,13 +37,6 @@ int main(int argc, char *argv[])    //TO DO: make more modular
     A2Methods_T methods = uarray2_methods_plain;
     assert(methods);
 
-<<<<<<< HEAD
-=======
-    /* open file pointers */
-    FILE *fp_1 = open_or_abort(file_1, "r");
-    FILE *fp_2 = open_or_abort(file_2, "r");
-
->>>>>>> 7926a726cddc872cffb44b959e312e3d2dc8bed9
     /* pnm to read image */
     Pnm_ppm img_1 = Pnm_ppmread(fp_1, methods);
     int img_1_width = methods->width(img_1->pixels);
@@ -88,11 +63,7 @@ int main(int argc, char *argv[])    //TO DO: make more modular
     }
 
     /* calculate E */
-<<<<<<< HEAD
     float E = -1;
-=======
-    double E = -1;
->>>>>>> 7926a726cddc872cffb44b959e312e3d2dc8bed9
     int width, height;
 
     //TO DO: can one image have a smaller width, but a bigger height?
@@ -141,7 +112,6 @@ static FILE *open_or_abort(char *filename, char *mode)
     assert(fp != NULL);
 
     return fp;
-<<<<<<< HEAD
 }
 
 float calculate_E(int width, int height, Pnm_ppm img_1, Pnm_ppm img_2, 
@@ -174,54 +144,3 @@ float calculate_E(int width, int height, Pnm_ppm img_1, Pnm_ppm img_2,
     float numerator = red_t + green_t + blue_t;
     return sqrt((numerator / (3 * width * height)));
 }
-=======
-}
-
-double calculate_E(int width, int height, Pnm_ppm smaller, Pnm_ppm larger, 
-    A2Methods_T methods)
-{
-    // printf("in calculate\n");
-    double numerator = 0;
-    double denominator = 3 * width * height;
-    //find smaller image
-    //call map function on it
-    //cl contains Pnm_ppm or larger image & running total of summation
-        //apply function accesses pixel at larger image & adds ... to sum
-    //create struct to pass into cl, holding larger & summation total
-    
-    // struct closure *cl = malloc(sizeof(*cl));
-    // cl->larger = larger;
-    // cl->summation = 0;
-    // smaller->methods->map_default(smaller->pixel, summation, cl);
-
-    for (int i = 0; i < width; i++) {
-        for (int j = 0; j < height; j++) {
-            Pnm_rgb pixel = methods->at(smaller->pixels, i, j);
-            unsigned red_1 = pixel->red;
-            unsigned green_1 = pixel->green;
-            unsigned blue_1 = pixel->blue;
-
-            // printf("2\n");
-            
-            pixel = methods->at(larger->pixels, i, j);
-            unsigned red_2 = pixel->red;
-            unsigned green_2 = pixel->green;
-            unsigned blue_2 = pixel->blue;
-
-            // printf("3\n");
-
-            numerator += pow((red_1 - red_2), 2) + pow((green_1 - green_2), 2) 
-                + pow((blue_1 - blue_2), 2);
-        }
-    }
-
-    return sqrt(numerator / denominator);
-}
-
-// struct closure {
-//     Pnm_ppm larger;
-//     double summation;
-// };
-
-//apply function
->>>>>>> 7926a726cddc872cffb44b959e312e3d2dc8bed9

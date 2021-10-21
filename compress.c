@@ -46,5 +46,6 @@ void apply_print(int i, int j, UArray2_T array2,
 
 void print_compressed(UArray2_T arr)
 {
+    printf("%d %d", UArray2_width(arr), UArray2_height(arr));
     UArray2_map_row_major(arr, apply_print, NULL);
 }

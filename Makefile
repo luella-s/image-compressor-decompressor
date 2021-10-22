@@ -66,7 +66,7 @@ all: pnmdiff compress40
 pnmdiff: pnmdiff.o a2plain.o uarray2.o
 	$(CC) $(LDFLAGS) $^ -o $@ $(LDLIBS)
 
-compress40: 40image.o compress.o a2plain.o uarray2.o
+compress40: 40image.o compress.o a2plain.o uarray2.o compress40.o decompress.o
 
 
 clean:

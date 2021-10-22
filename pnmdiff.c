@@ -8,11 +8,6 @@ int main(int argc, char *argv[])    //TO DO: make more modular
 {
     FILE *fp_1 = NULL;
     FILE *fp_2 = NULL;
-<<<<<<< HEAD
-
-=======
-    
->>>>>>> a4d467fa034a29c38c8a13f902d29a8c0a099229
     if (argc == 3) {
         /* first file is read from stdin */
         if (strcmp(argv[1], "-") == 0) {
@@ -147,8 +142,4 @@ float calculate_E(int width, int height, Pnm_ppm img_1, Pnm_ppm img_2,
 
     float numerator = red_t + green_t + blue_t;
     return sqrt((numerator / (3 * width * height)));
-<<<<<<< HEAD
 }
-=======
-}
->>>>>>> a4d467fa034a29c38c8a13f902d29a8c0a099229

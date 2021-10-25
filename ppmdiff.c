@@ -1,4 +1,4 @@
-#include "pnmdiff.h"
+#include "ppmdiff.h"
 #include "a2methods.h"
 #include "a2plain.h"
 #include "uarray2.h"
@@ -34,14 +34,16 @@ int main(int argc, char *argv[])    //TO DO: make more modular
 
     /* create A2Methods suite */
     A2Methods_T methods = uarray2_methods_plain;
-    assert(methods);
+    assert(methods != NULL);
 
     /* pnm to read image */
     Pnm_ppm img_1 = Pnm_ppmread(fp_1, methods);
+    assert(img_1 != NULL);
     int img_1_width = methods->width(img_1->pixels);
     int img_1_height = methods->height(img_1->pixels);
 
     Pnm_ppm img_2 = Pnm_ppmread(fp_2, methods);
+    assert(img_2 != NULL);
     int img_2_width = methods->width(img_2->pixels);
     int img_2_height = methods->height(img_2->pixels);
 
@@ -56,14 +58,17 @@ int main(int argc, char *argv[])    //TO DO: make more modular
     if (abs(img_1_height - img_2_height) > 1 || 
         abs(img_1_width - img_2_width) > 1) {
         fprintf(stderr, "width and height of both images differ by at most 1");
-        fprintf(stdout, "%f", 1.0);
+        fprintf(stdout, "%1.0f", 1.0);
         exit(EXIT_FAILURE);
         // printf("%d", 1);
     }
 
     /* calculate E */
     float E = -1;
-    int width, height;
+    int width = 0;
+    int height = 0;
+
+    // set_size(img_1, img_2, &width, &height);
 
     //TO DO: can one image have a smaller width, but a bigger height?
 
@@ -81,7 +86,7 @@ int main(int argc, char *argv[])    //TO DO: make more modular
     E = calculate_E(width, height, img_1, img_2, methods);
 
     /* output E */
-    fprintf(stdout, "%0.4f\n", E);
+    printf("%1.4f\n", E);
 
     /* free dynamically allocated memory */
     fclose(fp_1);
@@ -116,9 +121,16 @@ static FILE *open_or_abort(char *filename, char *mode)
 float calculate_E(int width, int height, Pnm_ppm img_1, Pnm_ppm img_2, 
     A2Methods_T methods)
 {
-    float red_t, green_t, blue_t;
+    float red_t = 0;
+    float green_t = 0;
+    float blue_t = 0;
     Pnm_rgb pixel;
-    float red_1, green_1, blue_1, red_2, green_2, blue_2;
+    float red_1 = 0;
+    float green_1 = 0;
+    float blue_1 = 0;
+    float red_2 = 0;
+    float green_2 = 0;
+    float blue_2 = 0;
     float denom_1 = (float) img_1->denominator;
     float denom_2 = (float) img_2->denominator;
 
@@ -140,6 +152,7 @@ float calculate_E(int width, int height, Pnm_ppm img_1, Pnm_ppm img_2,
         }
     }
 
-    float numerator = red_t + green_t + blue_t;
-    return sqrt((numerator / (3 * width * height)));
+    float numerator = (red_t + green_t + blue_t);
+    float res = sqrt(numerator / (3 * width * height));
+    return res;
 }

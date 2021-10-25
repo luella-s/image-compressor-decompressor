@@ -5,6 +5,14 @@
 #include "a2methods.h"
 #include "a2plain.h"
 
+/*
+
+TO ASK TA:
+- uarray2 vs uarray2b
+- separation of modules
+- how to store quantized stuff
+
+*/
 
 /*
  * The two functions below are functions you should implement.
@@ -20,25 +28,44 @@ void compress40(FILE *input)
     A2Methods_T methods = uarray2_methods_plain;
     assert(methods != NULL);
 
-    //read PPM image
+    /* read PPM image */
     assert(input != NULL);
     Pnm_ppm image = Pnm_ppmread(input, methods);
 
-    //convert to scaled float
+    /* convert to scaled float then into component video color space format */
     assert(image != NULL);
-    UArray2_T arr = convert_to_scaled_float(image);
+    UArray2_T cvc_arr = convert_to_cvc(image);
+
+    /* convert chrome values & cosine coeffecients */
+    UArray2_T dct_arr = dct(cvc_arr);
+
+    /* quantize values */
+    UArray2_T quant_arr = quantize(dct_arr);
+
+    /* bitpack */
 
     //print to stdout
     // print_compressed(arr);
 
-    //decompress
-    Pnm_ppm decomp = convert_to_ppm(arr, methods);
+    /* decompress */
+    /* revert from quantized values to dct values */
+    UArray2_T inverse_dct_arr = dequantize(quant_arr);
+
+    /* revert from dct to CVC */
+    assert(inverse_dct_arr != NULL);
+    UArray2_T inverse_cvc_arr = inverse_dct(inverse_dct_arr);
+
+    /* revert from CVC to PPM */
+    assert(inverse_cvc_arr != NULL);
+    Pnm_ppm decomp = cvc_to_ppm(inverse_cvc_arr, methods);
+
+    assert(decomp != NULL);
     Pnm_ppmwrite(stdout, decomp);
 
-    //FREE
+    /* FREE allocated memory*/
     Pnm_ppmfree(&image);
-    // Pnm_ppmfree(&decomp);
-    UArray2_free(&arr);
+    Pnm_ppmfree(&decomp);
+    UArray2_free(&cvc_arr);
 }
 
 /* reads compressed image, writes PPM */

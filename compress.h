@@ -17,15 +17,12 @@ UArray2_T dct(UArray2_T cvc_arr);
 UArray2_T quantize(UArray2_T dct_arr);
 
 /* helper functions */
-void trim_ppm(Pnm_ppm img);
 void check_bounds(int col, int row, UArray2_T cvc_arr);
 float clamp(float num, float lower, float upper);
-float avg_pb(int col, int row, UArray2_T cvc_arr);
-float avg_pr(int col, int row, UArray2_T cvc_arr);
-signed quantize_bcd(unsigned n);
 
 /* mapping functions */
-void unsigned_to_cvc(int i, int j, A2Methods_UArray2 array2, void *elem, void *cl);
+void unsigned_to_cvc(int i, int j, A2Methods_UArray2 array2, void *elem, 
+    void *cl);
 void apply_dct(int i, int j, UArray2_T array2, void *elem, void *cl);
 void apply_quantize(int i, int j, UArray2_T array2, void *elem, void *cl);
 

@@ -1,16 +1,14 @@
 #include "compress40.h"
 #include "pnm.h"
-#include "compress.h"
-#include "decompress.h"
+#include "rgb_cvc.h"
+#include "cvc_dct.h"
+#include "dct_quant.h"
 #include "a2methods.h"
 #include "a2plain.h"
 
 /*
 
 TO ASK TA:
-- uarray2 vs uarray2b
-- separation of modules
-- how to store quantized stuff
 
 */
 
@@ -45,7 +43,6 @@ void compress40(FILE *input)
     /* bitpack */
 
     //print to stdout
-    // print_compressed(arr);
 
     /* decompress */
     /* revert from quantized values to dct values */
@@ -66,6 +63,10 @@ void compress40(FILE *input)
     Pnm_ppmfree(&image);
     Pnm_ppmfree(&decomp);
     UArray2_free(&cvc_arr);
+    UArray2_free(&dct_arr);
+    UArray2_free(&quant_arr);
+    UArray2_free(&inverse_dct_arr);
+    UArray2_free(&inverse_cvc_arr);
 }
 
 /* reads compressed image, writes PPM */

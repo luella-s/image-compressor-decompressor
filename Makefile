@@ -74,4 +74,3 @@ test_bitpack: bitpack.o test_bitpack.o
 
 clean:
 	rm -f pnmdiff *.o
-

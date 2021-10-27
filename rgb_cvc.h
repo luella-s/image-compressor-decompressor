@@ -7,16 +7,20 @@
 #include "stdio.h"
 #include "uarray2.h"
 #include "a2methods.h"
-#include "structs.h"
 #include "helper.h"
 
-
+typedef struct Cvc {
+    float y;
+    float pb;
+    float pr;
+} *Cvc;
 
 UArray2_T convert_to_cvc(Pnm_ppm img);
+Pnm_ppm cvc_to_ppm(UArray2_T arr, A2Methods_T methods);
+
 void trim_ppm(Pnm_ppm img);
 void unsigned_to_cvc(int i, int j, A2Methods_UArray2 array2, 
                     void *elem, void *cl);
-Pnm_ppm cvc_to_ppm(UArray2_T arr, A2Methods_T methods);
 void apply_cvc_to_unsigned(int i, int j, UArray2_T array2, 
                             void *elem, void *cl);
 

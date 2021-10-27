@@ -73,4 +73,4 @@ test_bitpack: bitpack.o test_bitpack.o
 	$(CC) $(LDFLAGS) $^ -o $@ $(LDLIBS)
 
 clean:
-	rm -f pnmdiff *.o
+	rm -f ppmdiff compress40 test_bitpack *.o

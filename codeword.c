@@ -12,11 +12,11 @@ void apply_bitpack(int col, int row, UArray2_T array2, void *elem, void *cl);
 void apply_bitunpack(int col, int row, UArray2_T array2, void *elem, void *cl);
 
 /* Helper functions */
-int index_converter(UArray2_T uarray2, int col, int row);
+// int index_converter(UArray2_T uarray2, int col, int row);
 
 //Bitpack_newu(uint64_t word, unsigned width, unsigned lsb, uint64_t value)
 
-UArray_T encode(UArray2_T quant_arr)
+UArray2_T encode(UArray2_T quant_arr)
 {
     assert(quant_arr != NULL);
     int width = UArray2_width(quant_arr);
@@ -26,10 +26,14 @@ UArray_T encode(UArray2_T quant_arr)
     assert(words != NULL);
     
     UArray2_map_row_major(quant_arr, apply_bitpack, words);
+
+    return words;
 }
 
 void apply_bitpack(int col, int row, UArray2_T array2, void *elem, void *cl)
 {
+    (void) array2;
+
     UArray2_T codeword_arr = (UArray2_T)cl;
     // int index = index_converter(array2, col, row);
 
@@ -40,55 +44,76 @@ void apply_bitpack(int col, int row, UArray2_T array2, void *elem, void *cl)
     Quant block = (Quant)elem;
     assert(sizeof(*block) == sizeof(struct Quant));
 
-    uint32_t word = 0;
+    uint64_t word = 0;
     int a_lsb = WORD_BITS - A_BITS;
-    word = Bitpack_newu(word, a_bits, a_lsb, block->a);
+    word = Bitpack_newu(word, A_BITS, a_lsb, (uint64_t)block->scaled_a);
     int b_lsb = a_lsb - B_BITS;
-    word = Bitpack_newu(word, b_bits, b_lsb, block->b);
+    word = Bitpack_news(word, B_BITS, b_lsb, (int64_t)block->scaled_b);
     int c_lsb = b_lsb - C_BITS;
-    word = Bitpack_newu(word, c_bits, c_lsb, block->c);
+    word = Bitpack_news(word, C_BITS, c_lsb, (int64_t)block->scaled_c);
     int d_lsb = c_lsb - D_BITS;
-    word = Bitpack_newu(word, d_bits, d_lsb, block->d);
+    word = Bitpack_news(word, D_BITS, d_lsb, (int64_t)block->scaled_d);
     int pb_lsb = d_lsb - PB_BITS;
-    word = Bitpack_newu(word, pb_bits, pb_lsb, block->ind_pb);
+    word = Bitpack_newu(word, PB_BITS, pb_lsb, (uint64_t)block->ind_pb);
     int pr_lsb = pb_lsb - PR_BITS;
-    word = Bitpack_newu(word, pr_bits, pr_lsb, block->ind_pr);
+    word = Bitpack_newu(word, PR_BITS, pr_lsb, (uint64_t)block->ind_pr);
 
-    *codeword = word;
+    *codeword = (uint32_t)word;
 }
+
+//big-endian ends with largest address
+//getc, putc
 
 UArray2_T decode(UArray2_T codeword_arr)
 {
     assert(codeword_arr != NULL);
 
     int width = UArray2_width(codeword_arr);
-    int height = UArray3_height(codeword_arr);
+    int height = UArray2_height(codeword_arr);
     UArray2_T quant_arr = UArray2_new(width, height, sizeof(struct Quant));
     assert(quant_arr != NULL);
 
     UArray2_map_row_major(codeword_arr, apply_bitunpack, quant_arr);
+
+    return quant_arr;
 }
 
 void apply_bitunpack(int col, int row, UArray2_T array2, void *elem, void *cl)
 {
+    (void) col;
+    (void) row;
+    (void) array2;
+
     UArray2_T quant_arr = (UArray2_T)cl;
     assert(quant_arr != NULL);
     
-    uint32_t codeword = (uint32_t)elem;
+    uint32_t *codeword = (uint32_t *)elem;
     assert(sizeof(*codeword) == sizeof(uint32_t));
+    uint64_t word = *codeword;
+
+    int a_lsb = WORD_BITS - A_BITS;
+    unsigned a = Bitpack_getu(word, A_BITS, (uint64_t)a_lsb);
+
+    int b_lsb = a_lsb - B_BITS;
+    signed b = Bitpack_gets(word, B_BITS, (int64_t)b_lsb);
+    
+    int c_lsb = b_lsb - C_BITS;
+    signed c = Bitpack_gets(word, C_BITS, (int64_t)c_lsb);
+
+    int d_lsb = c_lsb - D_BITS;
+    signed d = Bitpack_gets(word, D_BITS, (int64_t)d_lsb);
+
+    int pb_lsb = d_lsb - PB_BITS;
+    unsigned ind_pb = Bitpack_getu(word, PB_BITS, (uint64_t)pb_lsb);
+    
+    int pr_lsb = pb_lsb - PR_BITS;
+    unsigned ind_pr = Bitpack_getu(word, PR_BITS, (uint64_t)pr_lsb);
+
+    Quant block = UArray2_at(quant_arr, col, row);
+    block->scaled_a = a;
+    block->scaled_b = b;
+    block->scaled_c = c;
+    block->scaled_d = d;
+    block->ind_pb = ind_pb;
+    block->ind_pr = ind_pr;
 }
-
-
-// int index_converter(UArray2_T uarray2, int col, int row)
-// {
-// 	assert(uarray2 != NULL);
-	
-// 	int width = UArray2_width(uarray2);
-// 	int height = UArray2_height(uarray2);
-
-// 	/* Assert that index given is within 2D array dimensions */
-// 	assert((col < width) && (col >= 0) && (row < height) && (row >= 0));
-
-// 	int index = row * width + col;
-// 	return index;
-// }

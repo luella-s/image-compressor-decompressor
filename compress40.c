@@ -3,6 +3,7 @@
 #include "rgb_cvc.h"
 #include "cvc_dct.h"
 #include "dct_quant.h"
+#include "codeword.h"
 #include "a2methods.h"
 #include "a2plain.h"
 
@@ -21,7 +22,7 @@ TO ASK TA:
 /* reads PPM, writes compressed image */
 void compress40(FILE *input)
 {
-    //TODO
+    //TODO: pass in methods?
     /* create A2Methods suite */
     A2Methods_T methods = uarray2_methods_plain;
     assert(methods != NULL);
@@ -41,12 +42,16 @@ void compress40(FILE *input)
     UArray2_T quant_arr = quantize(dct_arr);
 
     /* bitpack */
+    UArray2_T codeword_arr = encode(quant_arr);
 
-    //print to stdout
+    /* print to stdout */
 
     /* decompress */
+    /* unpack 32-bit word */
+    UArray2_T inverse_quant_arr = decode(codeword_arr);
+
     /* revert from quantized values to dct values */
-    UArray2_T inverse_dct_arr = dequantize(quant_arr);
+    UArray2_T inverse_dct_arr = dequantize(inverse_quant_arr);
 
     /* revert from dct to CVC */
     assert(inverse_dct_arr != NULL);
@@ -59,7 +64,7 @@ void compress40(FILE *input)
     assert(decomp != NULL);
     Pnm_ppmwrite(stdout, decomp);
 
-    /* FREE allocated memory*/
+    /* FREE allocated memory */
     Pnm_ppmfree(&image);
     Pnm_ppmfree(&decomp);
     UArray2_free(&cvc_arr);
@@ -67,6 +72,8 @@ void compress40(FILE *input)
     UArray2_free(&quant_arr);
     UArray2_free(&inverse_dct_arr);
     UArray2_free(&inverse_cvc_arr);
+    UArray2_free(&codeword_arr);
+    UArray2_free(&inverse_quant_arr);
 }
 
 /* reads compressed image, writes PPM */

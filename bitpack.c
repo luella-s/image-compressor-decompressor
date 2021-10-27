@@ -55,12 +55,12 @@ static uint64_t update(uint64_t word, unsigned width, unsigned lsb, uint64_t val
     // fprintf(stderr, "word: %lu\n", word);
     
     /* Puts value into cleared field of word */
-    fprintf(stderr, "value: %lu\n", value);
+    // fprintf(stderr, "value: %lu\n", value);
     value = leftshift(value, (64 - width));
-    fprintf(stderr, "value after leftshift of %u: %lu\n", lsb, value);
+    // fprintf(stderr, "value after leftshift of %u: %lu\n", lsb, value);
     value = logical_rightshift(value, (64 - width - lsb));
-    fprintf(stderr, "value after rightshift: %lu\n", value);
-    fprintf(stderr, "word: %lu\n", word);
+    // fprintf(stderr, "value after rightshift: %lu\n", value);
+    // fprintf(stderr, "word: %lu\n", word);
     word = (word | value);
     // fprintf(stderr, "final: %lu\n", word);
     return word;

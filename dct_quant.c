@@ -3,6 +3,8 @@
 #define A_BITS 9
 #define BCD_BITS 5
 
+/* Function declarations */
+
 /* * * * * * * Quantize to Chroma Indixes & Cosine Coefficients * * * * * * */
 
 UArray2_T quantize(UArray2_T dct_arr)

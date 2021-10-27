@@ -58,30 +58,69 @@ void test_getu()
 
 void test_gets() 
 {
-    // int64_t neg = -25; //1111111111111111111111100111
+    int64_t neg = -25; //1111111111111111111111100111
     int64_t pos = 40; //00101000
-    // int64_t neg1 = Bitpack_gets(neg, 6, 0); //100111 //-25
-    // int64_t neg2 = Bitpack_gets(neg, 5, 40); //11111
-    // int64_t pos1 = Bitpack_gets(pos, 64, 0); //dec is 40
-    // int64_t pos2 = Bitpack_gets(pos, 63, 1); //00010100
-    // int64_t pos3 = Bitpack_gets(pos, 4, 2); //00010100
-    // fprintf(stderr, "neg1: %ld\n", neg1);
-    // fprintf(stderr, "neg2: %ld\n", neg2);
-    // fprintf(stderr, "pos1: %ld\n", pos1);
-    // fprintf(stderr, "pos2: %ld\n", pos2);
-    // fprintf(stderr, "pos3: %ld\n", pos3);
+    int64_t neg1 = Bitpack_gets(neg, 6, 0); //100111 //-25
+    int64_t neg2 = Bitpack_gets(neg, 5, 40); //11111
+    int64_t pos1 = Bitpack_gets(pos, 64, 0); //dec is 40
+    int64_t pos2 = Bitpack_gets(pos, 63, 1); //00010100
+    int64_t pos3 = Bitpack_gets(pos, 4, 2); //00010100
+    fprintf(stderr, "neg1: %ld\n", neg1);
+    fprintf(stderr, "neg2: %ld\n", neg2);
+    fprintf(stderr, "pos1: %ld\n", pos1);
+    fprintf(stderr, "pos2: %ld\n", pos2);
+    fprintf(stderr, "pos3: %ld\n", pos3);
 
+}
+
+void test_newu()
+{
+    uint64_t one = Bitpack_newu(15, 2, 0, 2);
+    fprintf(stderr, "Expected: 14 Output: %lu\n", one);
+    uint64_t two = Bitpack_newu(100, 3, 2, 0);
+    fprintf(stderr, "Expected: 96 Output: %lu\n", two);
+    uint64_t three = Bitpack_newu(456789766165, 5, 5, 31);
+    fprintf(stderr, "Expected: 456789767157 Output: %lu\n", three);
+    
+}
+
+void test_news()
+{
+    //uint64_t word, unsigned width, unsigned lsb,  int64_t value
+    uint64_t pos = 31;
+    uint64_t neg = ~0; //1111 1111 11....
+    uint64_t news_pos1 = Bitpack_news(pos, 3, 5, 3); //should be 0111 1111
+    fprintf(stderr, "Expected: 127 Output: %lu\n", news_pos1);
+    uint64_t news_pos2 = Bitpack_news(pos, 3, 5, -4); //should be 1001 1111
+    fprintf(stderr, "Expected: 159 Output: %lu\n", news_pos2);
+    int64_t news_neg1 = Bitpack_news(neg, 4, 1, -8); //should be 111...10001
+    fprintf(stderr, "Expected: -15 Output: %ld\n", news_neg1);
+    uint64_t news_neg2 = Bitpack_news(neg, 4, 1, -1); //should be 111...11111
+    fprintf(stderr, "Expected: %lu Output: %lu\n", UINT64_MAX, news_neg2);
+    // fprintf(stderr, "neg1: %lu\n neg2: %lu\n", news_neg1, news_neg2);
+}
+
+void utol()
+{
+    uint64_t u = 584115552301;
+    fprintf(stderr, "unsigned: %lu\n", u);
+    int64_t s = u;
+    fprintf(stderr, "signed: %ld\n", s);
 }
 
 int main(int argc, char *argv[])
 {
     (void) argc;
     (void) argv;
-    /* test bitpack_fits */
+    /* test b();itpack_fits */
     // test_fitsu();
-    // test_fitss();
+    // // teust_fits
+    // test_newu();
+    // test_news();
     // test_getu();
-    test_gets();
+    // test_gets();
+    // utol();
+
     
     return 0;
 }

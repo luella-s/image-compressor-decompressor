@@ -10,6 +10,8 @@
 #include "structs.h"
 #include "helper.h"
 
+
+
 UArray2_T convert_to_cvc(Pnm_ppm img);
 void trim_ppm(Pnm_ppm img);
 void unsigned_to_cvc(int i, int j, A2Methods_UArray2 array2, 

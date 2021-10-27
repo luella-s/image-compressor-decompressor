@@ -66,7 +66,7 @@ all: ppmdiff compress40 test_bitpack
 ppmdiff: ppmdiff.o a2plain.o uarray2.o
 	$(CC) $(LDFLAGS) $^ -o $@ $(LDLIBS)
 
-compress40: 40image.o a2plain.o uarray2.o compress40.o rgb_cvc.o cvc_dct.o dct_quant.o helper.o codeword.o bitpack.o
+compress40: 40image.o a2plain.o uarray2.o compress40.o rgb_cvc.o cvc_dct.o dct_quant.o helper.o codeword.o bitpack.o print_read.o
 	$(CC) $(LDFLAGS) $^ -o $@ $(LDLIBS)
 
 test_bitpack: bitpack.o test_bitpack.o

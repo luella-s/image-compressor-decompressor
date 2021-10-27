@@ -4,6 +4,7 @@
 #include "cvc_dct.h"
 #include "dct_quant.h"
 #include "codeword.h"
+#include "print_read.h"
 #include "a2methods.h"
 #include "a2plain.h"
 
@@ -45,6 +46,7 @@ void compress40(FILE *input)
     UArray2_T codeword_arr = encode(quant_arr);
 
     /* print to stdout */
+    print_binary(codeword_arr);
 
     /* decompress */
     /* unpack 32-bit word */
@@ -62,7 +64,7 @@ void compress40(FILE *input)
     Pnm_ppm decomp = cvc_to_ppm(inverse_cvc_arr, methods);
 
     assert(decomp != NULL);
-    Pnm_ppmwrite(stdout, decomp);
+    // Pnm_ppmwrite(stdout, decomp);
 
     /* FREE allocated memory */
     Pnm_ppmfree(&image);

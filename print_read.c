@@ -1,5 +1,9 @@
 #include "print_read.h"
 
+#define WORD_SIZE 32
+
+void apply_print(int col, int row, UArray2_T array2, void *elem, void *cl);
+
 void print_binary(UArray2_T decode_arr)
 {
     assert(decode_arr != NULL);
@@ -11,12 +15,21 @@ void print_binary(UArray2_T decode_arr)
 
 void apply_print(int col, int row, UArray2_T array2, void *elem, void *cl)
 {
-    for (int i = 0; i < WORD_SIZE / 4; i++) {
-        putc(stdout);
+    (void) col;
+    (void) row;
+    (void) array2;
+    (void) cl;
+
+    uint32_t *word = (uint32_t *)elem;
+
+    fprintf(stderr, "%u\n", *word);
+
+    for (int i = 0; i < WORD_SIZE / 8; i++) {
+        putc(*word, stdout);
     }
 }
 
-void read_binary(FILE *fp)
-{
+// void read_binary(FILE *fp)
+// {
     
-}
+// }

@@ -8,8 +8,8 @@ void index_convert(UArray2_T array2, unsigned index, int *col, int *row);
 void print_binary(UArray2_T coded_arr)
 {
     assert(coded_arr != NULL);
-    unsigned width = UArray2_width(coded_arr) * 2;
-    unsigned height = UArray2_height(coded_arr) * 2;
+    unsigned width = UArray2_width(coded_arr);
+    unsigned height = UArray2_height(coded_arr);
     printf("COMP40 Compressed image format 2\n%u %u\n", width, height);
     UArray2_map_row_major(coded_arr, apply_print, NULL);
 }
@@ -25,9 +25,11 @@ void apply_print(int col, int row, UArray2_T array2, void *elem, void *cl)
     // fprintf(stderr, "The bytes for %02X are ", word);
     // fprintf(stderr, "%02X\n", word);
     unsigned lsb;
+    // fprintf(stderr, "%02X\n", word);
 
     for (int i = (WORD_SIZE / 8 - 1); i >= 0; i--) {
         lsb = i * 8;
+        // fprintf(stderr, "lsb: %u\n", lsb);
         uint64_t field = Bitpack_getu(word, 8, lsb);
         // fprintf(stderr, "uint64: %lu", field);
         // fprintf(stderr, "%02lX", field);
@@ -64,15 +66,25 @@ UArray2_T read_binary(FILE *fp)
 
     int col = 0;
     int row = 0;
-    int index = 0;
+    unsigned index = 0;
+    uint64_t word = 0;
 
     UArray2_T coded_arr = UArray2_new(width, height, sizeof(uint32_t));
     c = getc(fp);
-    while (c != EOF) {
+    while (c != EOF && index < (width * height)) {
+        //loop 4 times
+        //store in 32-bit uint
+        for (int i = (WORD_SIZE / 8 - 1); i >= 0; i--) {
+            fprintf(stderr, "lsb: %u\n", (i * 8));
+            word = Bitpack_newu(word, 8, (i * 8), (uint64_t)c);
+            c = getc(fp);
+            // assert(c != EOF);
+        }
         index_convert(coded_arr, index, &col, &row);
-        *((uint32_t *)UArray2_at(coded_arr, col, row)) = c;
+        *((uint32_t *)UArray2_at(coded_arr, col, row)) = word;
         index++;
-        c = getc(fp);
+        // fprintf(stderr, "%02lX\n", word);
     }
+    assert(index >= (width * height));
     return coded_arr;
 }

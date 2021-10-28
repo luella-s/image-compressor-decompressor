@@ -1,5 +1,11 @@
 #include "cvc_dct.h"
 
+void apply_dct(int i, int j, UArray2_T array2, void *elem, void *cl);
+void apply_inverse_dct(int i, int j, UArray2_T array2, void *elem, 
+                            void *cl);
+float avg_pb(int col, int row, UArray2_T cvc_arr);
+float avg_pr(int col, int row, UArray2_T cvc_arr);
+
 /* * * * * Apply Discrete Cosine Transform & Compute Average Values * * * * */
 
 /* Takes in 2D array of CVC structs, packs 2x2 into a block 
@@ -11,8 +17,8 @@ UArray2_T dct(UArray2_T cvc_arr)
     assert(cvc_arr != NULL);
     
     /* make uarray2 */
-    int width = UArray2_width(cvc_arr) / 2;
-    int height = UArray2_height(cvc_arr) / 2;
+    int width = (UArray2_width(cvc_arr) / 2);
+    int height = (UArray2_height(cvc_arr) / 2);
     UArray2_T dct_arr = UArray2_new(width, height, sizeof(struct Dct_float));
     
     UArray2_map_row_major(dct_arr, apply_dct, cvc_arr);

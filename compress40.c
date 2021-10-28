@@ -48,7 +48,21 @@ void compress40(FILE *input)
     /* print to stdout */
     print_binary(codeword_arr);
 
+    /* FREE allocated memory */
+    Pnm_ppmfree(&image);
+    UArray2_free(&cvc_arr);
+    UArray2_free(&dct_arr);
+    UArray2_free(&quant_arr);
+    UArray2_free(&codeword_arr);
+}
+
+/* reads compressed image, writes PPM */
+void decompress40(FILE *input)
+{
+    assert(input != NULL);
     /* decompress */
+    UArray2_T codeword_arr = read_binary(input);
+
     /* unpack 32-bit word */
     UArray2_T inverse_quant_arr = decode(codeword_arr);
 
@@ -61,30 +75,14 @@ void compress40(FILE *input)
 
     /* revert from CVC to PPM */
     assert(inverse_cvc_arr != NULL);
+    A2Methods_T methods = uarray2_methods_plain;
     Pnm_ppm decomp = cvc_to_ppm(inverse_cvc_arr, methods);
 
     assert(decomp != NULL);
-    // Pnm_ppmwrite(stdout, decomp);
+    Pnm_ppmwrite(stdout, decomp);
 
-    /* FREE allocated memory */
-    Pnm_ppmfree(&image);
     Pnm_ppmfree(&decomp);
-    UArray2_free(&cvc_arr);
-    UArray2_free(&dct_arr);
-    UArray2_free(&quant_arr);
     UArray2_free(&inverse_dct_arr);
     UArray2_free(&inverse_cvc_arr);
-    UArray2_free(&codeword_arr);
     UArray2_free(&inverse_quant_arr);
-}
-
-/* reads compressed image, writes PPM */
-void decompress40(FILE *input)
-{
-    //TODO 
-    //read compressed output
-    assert(input != NULL);
-    // read_compress(input);
-    //convert to RGB
-    //convert to unscaled
 }

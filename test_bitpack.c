@@ -52,8 +52,16 @@ void test_getu()
     uint64_t num = 37; //100101
     uint64_t first_3 = Bitpack_getu(num, 3, 3); //4
     uint64_t second_3 = Bitpack_getu(num, 3, 0); //5
+    uint64_t a = Bitpack_getu(0x4787A267, 8, 24);
+    uint64_t b = Bitpack_getu(0x4787A267, 8, 16);
+    uint64_t c = Bitpack_getu(0x4787A267, 8, 8);
+    uint64_t d = Bitpack_getu(0x4787A267, 8, 0);
     fprintf(stderr, "first 3: %lu\n", first_3);
     fprintf(stderr, "second 3: %lu\n", second_3);
+    fprintf(stderr, "expected a: %d output: %lu\n", 0x47, a);
+    fprintf(stderr, "expected b: %d output: %lu\n", 0x87, b);
+    fprintf(stderr, "expected c: %d output: %lu\n", 0xA2, c);
+    fprintf(stderr, "expected d: %d output: %lu\n", 0x67, d);
 }
 
 void test_gets() 
@@ -117,7 +125,7 @@ int main(int argc, char *argv[])
     // // teust_fits
     // test_newu();
     // test_news();
-    // test_getu();
+    test_getu();
     // test_gets();
     // utol();
 

@@ -72,5 +72,8 @@ compress40: 40image.o a2plain.o uarray2.o compress40.o rgb_cvc.o cvc_dct.o dct_q
 test_bitpack: bitpack.o test_bitpack.o
 	$(CC) $(LDFLAGS) $^ -o $@ $(LDLIBS)
 
+endian: endian.o
+	$(CC) $(LDFLAGS) $^ -o $@ $(LDLIBS)
+
 clean:
 	rm -f ppmdiff compress40 test_bitpack *.o

@@ -20,13 +20,19 @@ void apply_print(int col, int row, UArray2_T array2, void *elem, void *cl)
     (void) array2;
     (void) cl;
 
-    uint32_t *word = (uint32_t *)elem;
+    uint32_t word = *(uint32_t *)elem;
+    // fprintf(stderr, "The bytes for %02X are ", word);
+    // fprintf(stderr, "%02X\n", word);
+    unsigned lsb;
 
-    fprintf(stderr, "%u\n", *word);
-
-    for (int i = 0; i < WORD_SIZE / 8; i++) {
-        putc(*word, stdout);
+    for (int i = (WORD_SIZE / 8 - 1); i >= 0; i--) {
+        lsb = i * 8;
+        uint64_t field = Bitpack_getu(word, 8, lsb);
+        // fprintf(stderr, "uint64: %lu", field);
+        // fprintf(stderr, "%02lX", field);
+        putchar(field);
     }
+    // fprintf(stderr, "\n");
 }
 
 // void read_binary(FILE *fp)

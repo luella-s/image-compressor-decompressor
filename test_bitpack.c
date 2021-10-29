@@ -16,10 +16,18 @@ void test_fitsu()
     //returns true
     fprintf(stderr, "value 0 fits in 0 (unsigned): %d\n", Bitpack_fitsu(0, 0));
 
-    //throws uncaught exception
-    // fprintf(stderr, "value -3 fits in -23 (unsigned): %d\n", Bitpack_fitsu(-3, -23));
+    fprintf(stderr, "UINT64_MAX is %lu\n", UINT64_MAX);
+    uint64_t max = ~0;
+    fprintf(stderr, "bitpack max is %lu\n", max);
+    fprintf(stderr, "value UINT64_MAX - 1 fits in 64 (unsigned): %d\n", Bitpack_fitsu(UINT64_MAX - 1, 64));
 
     fprintf(stderr, "value UINT64_MAX fits in 64 (unsigned): %d\n", Bitpack_fitsu(UINT64_MAX, 64));
+
+    fprintf(stderr, "value UINT64_MAX + 1 fits in 64 (unsigned): %d\n", Bitpack_fitsu((UINT64_MAX + 1), 64));
+
+    fprintf(stderr, "value UINT64_MAX + 2 fits in 64 (unsigned): %d\n", Bitpack_fitsu((UINT64_MAX + 2), 64));
+
+    fprintf(stderr, "value UINT64_MAX + 3 fits in 64 (unsigned): %d\n", Bitpack_fitsu((UINT64_MAX + 3), 64));
 
     fprintf(stderr, "value UINT64_MAX fits in 63 (unsigned): %d\n", Bitpack_fitsu(UINT64_MAX, 63));
 
@@ -121,11 +129,11 @@ int main(int argc, char *argv[])
     (void) argc;
     (void) argv;
     /* test b();itpack_fits */
-    // test_fitsu();
+    test_fitsu();
     // // teust_fits
     // test_newu();
     // test_news();
-    test_getu();
+    // test_getu();
     // test_gets();
     // utol();
 

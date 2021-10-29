@@ -51,7 +51,7 @@ INCLUDES = $(shell echo *.h)
 
 ############### Rules ###############
 
-all: ppmdiff compress40 test_bitpack
+all: ppmdiff 40image test_bitpack endian
 
 
 ## Compile step (.c files -> .o files)
@@ -66,7 +66,7 @@ all: ppmdiff compress40 test_bitpack
 ppmdiff: ppmdiff.o a2plain.o uarray2.o
 	$(CC) $(LDFLAGS) $^ -o $@ $(LDLIBS)
 
-compress40: 40image.o a2plain.o uarray2.o compress40.o rgb_cvc.o cvc_dct.o dct_quant.o helper.o codeword.o bitpack.o print_read.o
+40image: 40image.o a2plain.o uarray2.o compress40.o rgb_cvc.o cvc_dct.o dct_quant.o helper.o codeword.o bitpack.o print_read.o
 	$(CC) $(LDFLAGS) $^ -o $@ $(LDLIBS)
 
 test_bitpack: bitpack.o test_bitpack.o
@@ -76,4 +76,4 @@ endian: endian.o
 	$(CC) $(LDFLAGS) $^ -o $@ $(LDLIBS)
 
 clean:
-	rm -f ppmdiff compress40 test_bitpack *.o
+	rm -f ppmdiff 40image endian test_bitpack *.o

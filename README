@@ -1,0 +1,87 @@
+README
+
+/**************************************************************
+ *
+ *                     README
+ *
+ *     Assignment: COMP40 Homework 4 - arith
+ *     Authors:  Luella Sugiman (lsugim01), Yingyang Liang (yliang03)
+ *     Date:     10/28/21
+ *
+ **************************************************************/
+
+To compress:
+./40image -c <filename>
+File must be a PPM image.
+Outputs 32-bit codewords in Big Endian order.
+
+To decompress:
+./40image -d <filename>
+File must contain 32-bit codewords.
+Outputs PPM image.
+
+Acknowledgements:
+- Help from TAs during office hours
+- Lecture slides
+
+Files included:
+- 40image.c
+- 40image.h
+- a2plain.c
+- uarray2.c
+- bitpack.c
+- codeword.c
+- codeword.h
+- compress40.c
+- rgb_cvc.c
+- rgb_cvc.h
+- cvc_dct.c
+- cvc_dct.h
+- dct_quant.c
+- dct_quant.h
+- codeword.c
+- codeword.h
+- print_read.c
+- print_read.h
+
+Architecture:
+Program implemented for client use is called 40image.
+It takes in a file and can either compress it or decompress it depending on client specification.
+
+The program is implemented by multiple modules, each of which corresponds to a 
+stage in the compression/decompression process.
+The modules are:
+1. rgb_cvc
+    This module is able to compress a PPM image to Component Video Color Space
+    (CVC) format and back.
+2. cvc_dct
+    This module is able to compress from CVC format to DCT format by performing the discrete cosine transformation and computing the average Pb, Pr. Also able to decompress from DCT to CVC by performing inverse calculations.
+3. dct_quant
+    This module is able to compress and decompress between DCT format and Quant format which are the scaled integers Pb', Pr', a, b, c, d. Compression is achieved by quantizing values in DCT format. Decompression is achieved by reverting quantized values.
+4. codeword
+    This module packs and unpacks 32-bit codewords holding the values a, b, c, d, Pb', Pr' using the Bitpack module.
+5. print_read
+    This module is able to print the codewords in row-major order and Big-Endian order to standard. It also can read codewords from a file and return a 2D array of codewords.
+
+Bitpack:
+    This module allows client to pack small values/fields into a 64-bit word.
+
+Correctly Implemented:
+- 40image
+    Program works as intended with no visible artifacts after compression and 
+    low difference percentage with the original image.
+- Bitpack
+    Program works as intended.
+
+Not Corectly Implemented:
+N/A
+
+Improvements/Thoughts:
+40image is not as efficient as jpeg.
+40image is not good at handling large images.
+
+Hours spent analyzing:
+4h
+
+Hours spent solving:
+28h

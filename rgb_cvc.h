@@ -25,6 +25,7 @@
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
  * Contents:
     values of Y, Pb and Pr
+   Represents Component Video Color Space
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 typedef struct Cvc {
     float y;

@@ -82,16 +82,16 @@ void apply_print(int col, int row, UArray2_T array2, void *elem, void *cl)
  * Returns: nothing (changes passed by reference).
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 void index_convert(UArray2_T array2, unsigned index, int *col, int *row)
-{	
-	assert(array2 != NULL);
+{
+    assert(array2 != NULL);
 
-	int width = UArray2_width(array2);
-	int height = UArray2_height(array2);
+    int width = UArray2_width(array2);
+    int height = UArray2_height(array2);
     int i = index % width;
     int j = index / width;
 
-	/* Assert that index given is within 2D array dimensions */
-	assert((i < width) && (i >= 0) && (j < height) && (j >= 0));
+    /* Assert that index given is within 2D array dimensions */
+    assert((i < width) && (i >= 0) && (j < height) && (j >= 0));
 
     /* update col and row values */
     *col = i;

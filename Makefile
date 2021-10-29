@@ -51,7 +51,7 @@ INCLUDES = $(shell echo *.h)
 
 ############### Rules ###############
 
-all: ppmdiff 40image test_bitpack endian
+all: ppmdiff 40image test_bitpack
 
 
 ## Compile step (.c files -> .o files)
@@ -70,9 +70,6 @@ ppmdiff: ppmdiff.o a2plain.o uarray2.o
 	$(CC) $(LDFLAGS) $^ -o $@ $(LDLIBS)
 
 test_bitpack: bitpack.o test_bitpack.o
-	$(CC) $(LDFLAGS) $^ -o $@ $(LDLIBS)
-
-endian: endian.o
 	$(CC) $(LDFLAGS) $^ -o $@ $(LDLIBS)
 
 clean:

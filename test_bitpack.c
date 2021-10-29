@@ -104,7 +104,7 @@ void test_news()
 {
     //uint64_t word, unsigned width, unsigned lsb,  int64_t value
     uint64_t pos = 31;
-    uint64_t neg = ~0; //1111 1111 11....
+    uint64_t neg = ~0;
     uint64_t news_pos1 = Bitpack_news(pos, 3, 5, 3); //should be 0111 1111
     fprintf(stderr, "Expected: 127 Output: %lu\n", news_pos1);
     uint64_t news_pos2 = Bitpack_news(pos, 3, 5, -4); //should be 1001 1111
@@ -113,7 +113,6 @@ void test_news()
     fprintf(stderr, "Expected: -15 Output: %ld\n", news_neg1);
     uint64_t news_neg2 = Bitpack_news(neg, 4, 1, -1); //should be 111...11111
     fprintf(stderr, "Expected: %lu Output: %lu\n", UINT64_MAX, news_neg2);
-    // fprintf(stderr, "neg1: %lu\n neg2: %lu\n", news_neg1, news_neg2);
 }
 
 void utol()
@@ -128,14 +127,13 @@ int main(int argc, char *argv[])
 {
     (void) argc;
     (void) argv;
-    /* test b();itpack_fits */
     test_fitsu();
-    // // teust_fits
-    // test_newu();
-    // test_news();
-    // test_getu();
-    // test_gets();
-    // utol();
+    test_fitss();
+    test_newu();
+    test_news();
+    test_getu();
+    test_gets();
+    utol();
 
     
     return 0;

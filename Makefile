@@ -73,4 +73,4 @@ test_bitpack: bitpack.o test_bitpack.o
 	$(CC) $(LDFLAGS) $^ -o $@ $(LDLIBS)
 
 clean:
-	rm -f ppmdiff 40image endian test_bitpack *.o
+	rm -f ppmdiff 40image test_bitpack *.o *.txt *.ppm

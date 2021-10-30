@@ -17,10 +17,10 @@
 #include "codeword.h"
 
 #define WORD_BITS 32
-#define A_BITS 6 //changed
-#define B_BITS 6 //changed
-#define C_BITS 6 //changed
-#define D_BITS 6 //changed
+#define A_BITS 6
+#define B_BITS 6
+#define C_BITS 6
+#define D_BITS 6
 #define PB_BITS 4
 #define PR_BITS 4
 

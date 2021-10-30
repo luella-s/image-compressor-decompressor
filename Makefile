@@ -51,7 +51,7 @@ INCLUDES = $(shell echo *.h)
 
 ############### Rules ###############
 
-all: ppmdiff 40image test_bitpack
+all: ppmdiff 40image-6 test_bitpack
 
 
 ## Compile step (.c files -> .o files)

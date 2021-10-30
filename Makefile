@@ -24,8 +24,8 @@ IFLAGS = -I/comp/40/build/include -I/usr/sup/cii40/include/cii
 # to use the GNU 99 standard to get the right items in time.h for the
 # the timing support to compile.
 # 
-# CFLAGS = -g -std=gnu99 -Wall -Wextra -Werror -Wfatal-errors -pedantic $(IFLAGS)
-CFLAGS = -g -std=gnu99 -Wall -Wextra -Werror -pedantic $(IFLAGS)
+CFLAGS = -g -std=gnu99 -Wall -Wextra -Werror -Wfatal-errors -pedantic $(IFLAGS)
+# CFLAGS = -g -std=gnu99 -Wall -Wextra -Werror -pedantic $(IFLAGS)
 
 
 # Linking flags
@@ -66,7 +66,7 @@ all: ppmdiff 40image test_bitpack
 ppmdiff: ppmdiff.o a2plain.o uarray2.o
 	$(CC) $(LDFLAGS) $^ -o $@ $(LDLIBS)
 
-40image: 40image.o a2plain.o uarray2.o compress40.o rgb_cvc.o cvc_dct.o dct_quant.o helper.o codeword.o bitpack.o print_read.o
+40image-6: 40image.o a2plain.o uarray2.o compress40.o rgb_cvc.o cvc_dct.o dct_quant.o helper.o codeword.o bitpack.o print_read.o
 	$(CC) $(LDFLAGS) $^ -o $@ $(LDLIBS)
 
 test_bitpack: bitpack.o test_bitpack.o

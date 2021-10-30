@@ -18,8 +18,8 @@
 
 #include "dct_quant.h"
 
-#define A_BITS 9
-#define BCD_BITS 5
+#define A_BITS 6 //changed
+#define BCD_BITS 6 //changed
 
 
 /* * * * * * * Quantize to Chroma Indixes & Cosine Coefficients * * * * * * */
@@ -112,7 +112,7 @@ signed quantize_bcd(float n)
     /* quantize value and clamp to range */
     signed res = round(n * bcd_choices);
     res = (signed)clamp(res, lower_limit, upper_limit);
-    assert((res <= 15) && (res >= -15));
+    assert((res <= upper_limit) && (res >= lower_limit)); //changed
     return res;
 }
 
